@@ -1,12 +1,22 @@
+import cookieParser from "cookie-parser";
 import express, { type Application, type Request, type Response } from "express";
+import logger from "./middleware/logger.middleware";
+import { errorHandler } from "./middleware/error.middleware";
+import authRoutes from "./modules/auth/auth.routes"
+
 
 const app: Application = express();
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(logger);
 
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello world");
+    res.send("Welcome to DevPulse");
 });
 
+app.use("/api/auth", authRoutes)
+
+app.use(errorHandler)
 export default app;
