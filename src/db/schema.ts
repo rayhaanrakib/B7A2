@@ -18,7 +18,7 @@ export const createSchema = async () => {
     description TEXT NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('bug', 'feature_request')),
     status VARCHAR(20) NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'in_progress', 'resolved')),
-    reporter_id INTEGER NOT NULL,
+    reporter_id INTEGER NOT NULL REFERENCES users(id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 )
