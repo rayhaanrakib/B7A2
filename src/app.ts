@@ -13,7 +13,14 @@ app.use(logger);
 
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Welcome to DevPulse");
+    res.send({
+        name: "DevPulse",
+        description: "Internal Tech Issue & Feature Tracker",
+        author: "rayhan",
+        nodeVersion: process.version,
+        platform: process.platform,
+        date: Date(),
+    });
 });
 
 app.use("/api/auth", authRoutes)
