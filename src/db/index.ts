@@ -6,5 +6,4 @@ export const sql = neon(config.database_url)
 
 export const initializeDB = async ()=>{
     await createSchema();
-    console.log("db connected");
 }

@@ -85,6 +85,17 @@ class IssueService {
   async deleteIssue(id:number){
     return await sql`DELETE FROM issues WHERE id = ${id} RETURNING *`;
   }
+  async updateStatus(id:number, status: IssueStatus){
+    const result = await sql`
+    UPDATE issues
+    SET
+    status = ${status},
+    updated_at = NOW()
+    WHERE id = ${id}
+    RETURNING *
+    `
+    return result[0]
+  }
 }
 
 export default new IssueService();
