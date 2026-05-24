@@ -82,7 +82,9 @@ class IssueService {
 
     return result[0];
   }
-
+  async deleteIssue(id:number){
+    return await sql`DELETE FROM issues WHERE id = ${id} RETURNING *`;
+  }
 }
 
 export default new IssueService();
