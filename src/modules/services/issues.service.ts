@@ -1,6 +1,6 @@
 import { sql } from "../../db";
 import authService from "./auth.service";
-import type { CreateIssue, IssueType, IssueStatus, IssueResponse } from "../../types/issue.types";
+import type { CreateIssue, IssueType, IssueStatus, IssueResponse, UpdateIssue } from "../../types/issue.types";
 
 interface IssueFilters {
   type?: IssueType | undefined;
@@ -66,6 +66,22 @@ class IssueService {
     return Promise.all(result.map(responseIssues));
   }
 
+  async updateIssue(id: number, data: UpdateIssue) {
+    const { title, description, type } = data;
+
+    const result = await sql`
+      UPDATE issues
+      SET
+        title       = COALESCE(${title ?? null}, title),
+        description = COALESCE(${description ?? null}, description),
+        type        = COALESCE(${type ?? null}, type),
+        updated_at  = NOW()
+      WHERE id = ${id}
+      RETURNING *
+    `;
+
+    return result[0];
+  }
 
 }
 
