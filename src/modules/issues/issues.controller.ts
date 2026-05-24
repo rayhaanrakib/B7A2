@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { sendResponse } from "../../utils/response.util";
 import issuesService from "../services/issues.service";
+import type { IssueResponse } from "../../types/issue.types";
 
 export const createIssue = async (req: Request, res: Response) => {
   const { title, description, type } = req.body;
@@ -33,6 +34,19 @@ export const getIssues = async (req: Request, res: Response) => {
     status: status as any,
     sort,
   });
-
   sendResponse(res, { message: "Issues retrived successfully", data: issues });
 };
+
+export const getIssueById = async (req: Request, res: Response) => {
+  const id = Number(req?.params?.id);
+  if (!id || id < 1) {
+    return sendResponse(res, { message: "Invalid Id" }, 400);
+  }
+  const issue = await issuesService.getIssueById(id);
+
+  if (!issue) {
+    return sendResponse(res, { message: "Issue not found" }, 404);
+  }
+
+  sendResponse(res, { message: "Issue retrieved successfully", data: issue[0] as  IssueResponse | undefined}, 200);
+}

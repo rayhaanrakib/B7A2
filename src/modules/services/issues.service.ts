@@ -60,6 +60,13 @@ class IssueService {
     const resData = await this.getAllIssues(filters);
     return Promise.all(resData.map(responseIssues));
   }
+
+  async getIssueById(id: number) {
+    const result = await sql`SELECT * FROM issues WHERE id = ${id}`;
+    return Promise.all(result.map(responseIssues));
+  }
+
+
 }
 
 export default new IssueService();
