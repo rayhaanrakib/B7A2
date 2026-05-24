@@ -16,8 +16,23 @@ export const createIssue = async (req: Request, res: Response) => {
     return;
   }
   sendResponse(
-    res,
-    { message: "Issue created successfully", data: newIssue },
+    res, { message: "Issue created successfully", data: newIssue },
     201,
   );
+};
+
+
+export const getIssues = async (req: Request, res: Response) => {
+  const { type, status, sort } = req.query as {
+    type?: string;
+    status?: string;
+    sort?: 'newest' | 'oldest';
+  };
+  const issues = await issuesService.getIssues({
+    type: type as any,
+    status: status as any,
+    sort,
+  });
+
+  sendResponse(res, { message: "Issues retrived successfully", data: issues });
 };

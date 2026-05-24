@@ -19,7 +19,11 @@ export interface CreateIssue {
   description: string;
   type: IssueType;
 }
-
+export interface IssueFilters{
+  status?: IssueStatus;
+  type?: IssueType;
+  reporter_id?: number;
+}
 export interface UpdateIssue {
   title?: string;
   description?: string;
