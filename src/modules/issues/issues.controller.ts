@@ -65,7 +65,7 @@ export const updateIssue = async (req: Request, res: Response) => {
   const currentUser = req.user!;
 
   const isMaintainer = currentUser.role === 'maintainer';
-  const isOwner = Number(issue.reporter.id === currentUser.id);
+  const isOwner = issue.reporter.id === currentUser.id;
   const isOpen = issue.status === 'open';
 
   if (!isMaintainer && !(isOwner && isOpen)) {

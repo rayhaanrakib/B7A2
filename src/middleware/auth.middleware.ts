@@ -5,12 +5,16 @@ import authService from "../modules/services/auth.service";
 
 export const privateRoute = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization;
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
       return sendResponse(res, { message: "token is missing", error: true }, 401);
     }
 
-    const payload = verifyToken(token, "refresh");
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : authHeader;
+
+    const payload = verifyToken(token, "access");
     if (!payload) {
       return sendResponse(res, { message: "Invalid token", error: true }, 401);
     }

@@ -37,7 +37,9 @@ class IssueService {
       VALUES (${reporter_id}, ${title}, ${description}, ${type})
       RETURNING *
     `;
-    return res[0];
+    const row = res[0];
+    if (!row) throw new Error("Failed to create issue");
+    return responseIssues(row);
   }
 
   async getAllIssues(filters: IssueFilters = {}) {
@@ -80,7 +82,7 @@ class IssueService {
       RETURNING *
     `;
 
-    return result[0];
+    return result[0] ? responseIssues(result[0]) : null;
   }
   async deleteIssue(id:number){
     return await sql`DELETE FROM issues WHERE id = ${id} RETURNING *`;
